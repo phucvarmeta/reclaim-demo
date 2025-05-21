@@ -1,0 +1,143 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #000000;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  padding: 20px;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.playground-container {
+  background-color: #1a1d23;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 800px;
+  margin-top: 2rem;
+}
+
+.test-button {
+  background-color: #ffffff;
+  color: #000000;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.test-button:hover {
+  background-color: #f0f0f0;
+}
+
+.test-button:disabled {
+  background-color: #666666;
+  color: #ffffff;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #000000;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.error-message {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.response-container {
+  margin-top: 2rem;
+  text-align: left;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.response-container pre {
+  background-color: #363a43;
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 0.9rem;
+}
+
+.qr-container {
+  margin-top: 2rem;
+  background-color: #363a43;
+  padding: 2rem;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.qr-container h3 {
+  margin: 0;
+  color: #61dafb;
+}
+
+.link-container {
+  margin-top: 1rem;
+}
+
+.reclaim-link {
+  color: #61dafb;
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 8px 16px;
+  border: 2px solid #61dafb;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.reclaim-link:hover {
+  background-color: #61dafb;
+  color: #282c34;
+}
