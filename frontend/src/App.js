@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import QRCode from 'react-qr-code';
 import { ReclaimProofRequest } from '@reclaimprotocol/js-sdk';
+import { getDeviceInfo } from './utils/deviceDetection';
 import './App.css';
 
 function App() {
@@ -8,22 +9,34 @@ function App() {
   const [proofs, setProofs] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [deviceInfo, setDeviceInfo] = useState(null);
+
+  useEffect(() => {
+    // Get device information when component mounts
+    const info = getDeviceInfo();
+    setDeviceInfo(info);
+    console.log('Device info:', info);
+  }, []);
 
   const generateConfig = async () => {
     setLoading(true);
     setError(null);
     try {
-
       // Step 1: Fetch the configuration from your backend
       const response = await fetch(`${process.env.REACT_APP_API_URL}/generate-config`);
       const { reclaimProofRequestConfig } = await response.json();
-      console.log('Config received:', reclaimProofRequestConfig);
       const newReclaimRequestConfig = JSON.parse(reclaimProofRequestConfig);
-      newReclaimRequestConfig.options = { device: "ios", log: true }
+      
+      // Use the detected device OS for better compatibility
+      newReclaimRequestConfig.options = { 
+        useAppClip: deviceInfo?.isIOS ? deviceInfo?.isMobile : false,
+        device: deviceInfo?.isIOS ? "ios" : "android", 
+        log: true 
+      };
 
       // Step 2: Initialize the ReclaimProofRequest with the received configuration
       const reclaimProofRequest = await ReclaimProofRequest.fromJsonString(JSON.stringify(newReclaimRequestConfig));
-      //reclaimProofRequest.
+      
       // Step 3: Generate the request URL for the verification process
       const url = await reclaimProofRequest.getRequestUrl();
       setRequestUrl(url);
@@ -74,6 +87,13 @@ function App() {
           fontWeight: '600',
           letterSpacing: '-0.5px'
         }}>Reclaim Protocol Demo</h1>
+        
+        {deviceInfo && (
+          <div style={{ margin: '0 0 20px', color: '#aaa', fontSize: '0.9rem' }}>
+            Device: {deviceInfo.isMobile ? 'Mobile' : 'Desktop'} ({deviceInfo.os})
+          </div>
+        )}
+        
         <div className="playground-container" style={{
           backgroundColor: '#1a1a1a',
           boxShadow: '0 8px 16px rgba(0,0,0,0.2)'

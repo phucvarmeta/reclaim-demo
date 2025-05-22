@@ -28,7 +28,7 @@ app.get('/generate-config', async (req, res) => {
       const reclaimProofRequest = await ReclaimProofRequest.init(APP_ID, APP_SECRET, PROVIDER_ID)
       // we will be defining this endpoint in the next step
 
-      reclaimProofRequest.setAppCallbackUrl(process.env.BASE_URL+'/receive-proofs')
+      // reclaimProofRequest.setAppCallbackUrl(process.env.BASE_URL+'/receive-proofs')
       
       const reclaimProofRequestConfig = reclaimProofRequest.toJsonString()
    
