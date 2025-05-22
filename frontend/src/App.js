@@ -15,11 +15,11 @@ function App() {
     try {
 
       // Step 1: Fetch the configuration from your backend
-      const response = await fetch('https://reclaim-mvp.var-meta.com/api/generate-config');
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/generate-config`);
       const { reclaimProofRequestConfig } = await response.json();
       console.log('Config received:', reclaimProofRequestConfig);
       const newReclaimRequestConfig = JSON.parse(reclaimProofRequestConfig);
-      newReclaimRequestConfig.options = { useAppClip: true, device: "ios", log: true }
+      newReclaimRequestConfig.options = { device: "ios", log: true }
 
       // Step 2: Initialize the ReclaimProofRequest with the received configuration
       const reclaimProofRequest = await ReclaimProofRequest.fromJsonString(JSON.stringify(newReclaimRequestConfig));
@@ -136,10 +136,8 @@ function App() {
                   }}
                 />
                 <div style={{ marginTop: '1.5rem' }}>
-                  <a
+                  <div
                     onClick={handleOpenLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',
@@ -164,7 +162,7 @@ function App() {
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z" />
                     </svg>
-                  </a>
+                  </div>
                 </div>
               </div>
             )}

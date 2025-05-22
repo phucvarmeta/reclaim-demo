@@ -3,6 +3,8 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
+require('dotenv').config()
+
 // Enable CORS
 app.use(cors());
 
@@ -22,11 +24,11 @@ app.get('/health', async (req, res) => {
   }
 });
 app.get('/generate-config', async (req, res) => {
-
     try {
       const reclaimProofRequest = await ReclaimProofRequest.init(APP_ID, APP_SECRET, PROVIDER_ID)
       // we will be defining this endpoint in the next step
-      //reclaimProofRequest.setAppCallbackUrl(BASE_URL+'/receive-proofs')
+
+      reclaimProofRequest.setAppCallbackUrl(process.env.BASE_URL+'/receive-proofs')
       
       const reclaimProofRequestConfig = reclaimProofRequest.toJsonString()
    
@@ -37,6 +39,22 @@ app.get('/generate-config', async (req, res) => {
     }
   })
 
+// Route to receive proofs
+app.post('/receive-proofs', async (req, res) => {
+  // decode the urlencoded proof object; see below if not using express middlewares for decoding
+  const decodedBody = decodeURIComponent(req.body);
+  const proof = JSON.parse(decodedBody);
+ 
+  // Verify the proof using the SDK verifyProof function
+  const result = await verifyProof(proof)
+  if (!result) {
+    return res.status(400).json({ error: 'Invalid proofs data' });
+  }
+ 
+  console.log('Received proofs:', proof)
+  // Process the proofs here
+  return res.sendStatus(200)
+})
 
 // Start the server
 const PORT = process.env.PORT || 8000;
