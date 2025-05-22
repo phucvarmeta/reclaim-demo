@@ -13,8 +13,9 @@ function App() {
     setLoading(true);
     setError(null);
     try {
+
       // Step 1: Fetch the configuration from your backend
-      const response = await fetch('https://reclaim-demo.var-meta.com/generate-config');
+      const response = await fetch('https://reclaim-mvp.var-meta.com/api/generate-config');
       const { reclaimProofRequestConfig } = await response.json();
       console.log('Config received:', reclaimProofRequestConfig);
       const newReclaimRequestConfig = JSON.parse(reclaimProofRequestConfig);
@@ -48,6 +49,21 @@ function App() {
     }
   };
 
+  const handleOpenLink = (e) => {
+    e.preventDefault();
+    if (!requestUrl) return;
+    const tempLink = document.createElement('a');
+    tempLink.href = requestUrl;
+    tempLink.target = '_blank';
+    tempLink.rel = 'noopener noreferrer';
+
+    document.body.appendChild(tempLink);
+    setTimeout(() => {
+      tempLink.click();
+      document.body.removeChild(tempLink);
+    }, 100);
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -68,7 +84,7 @@ function App() {
             alignItems: 'center',
             gap: '2rem'
           }}>
-            <button 
+            <button
               onClick={generateConfig}
               disabled={loading}
               className="test-button"
@@ -80,7 +96,7 @@ function App() {
               }}
             >
               {loading ? (
-                <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <div className="spinner"></div>
                   <span>Generating...</span>
                 </div>
@@ -110,18 +126,18 @@ function App() {
                   color: '#ffffff',
                   marginBottom: '1.5rem'
                 }}>Scan QR Code or Click Link</h3>
-                <QRCode 
+                <QRCode
                   value={requestUrl}
                   size={256}
-                  style={{ 
-                    background: 'white', 
+                  style={{
+                    background: 'white',
                     padding: '16px',
                     borderRadius: '8px'
                   }}
                 />
-                <div style={{marginTop: '1.5rem'}}>
-                  <a 
-                    href={requestUrl}
+                <div style={{ marginTop: '1.5rem' }}>
+                  <a
+                    onClick={handleOpenLink}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
@@ -146,7 +162,7 @@ function App() {
                   >
                     <span>Open Verification Link</span>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/>
+                      <path d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z" />
                     </svg>
                   </a>
                 </div>
